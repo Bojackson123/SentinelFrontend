@@ -1,6 +1,7 @@
 import { Separator } from "@/components/ui/separator"
 import { SidebarTrigger } from "@/components/ui/sidebar"
 import { useMatches } from "@tanstack/react-router"
+import { ModeToggle } from "@/components/mode-toggle"
 
 const titleMap: Record<string, string> = {
   "/_app/": "Dashboard",
@@ -27,6 +28,9 @@ export function SiteHeader() {
           <Separator orientation="vertical" className="h-4" />
         </div>
         <h1 className="text-base font-medium">{title}</h1>
+        <div className="ml-auto">
+          <ModeToggle />
+        </div>
       </div>
     </header>
       <div className="mx-4">

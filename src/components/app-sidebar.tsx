@@ -17,7 +17,7 @@ import { useAuth } from "@/stores/auth-store"
 import { Link } from "@tanstack/react-router"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user, isInternal, isCompanyUser, isHomeowner } = useAuth();
+  const { user, isInternal, isCompanyUser } = useAuth();
 
   const navMain = React.useMemo(() => {
     const items: { title: string; url: string; icon: React.ReactNode }[] = [

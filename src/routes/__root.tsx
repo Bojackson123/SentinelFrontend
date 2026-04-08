@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "@/stores/auth-store";
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { ThemeProvider } from "@/components/theme-provider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -20,12 +21,14 @@ export const Route = createRootRoute({
 function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <TooltipProvider>
-          <Outlet />
-          <Toaster />
-        </TooltipProvider>
-      </AuthProvider>
+      <ThemeProvider defaultTheme="system">
+        <AuthProvider>
+          <TooltipProvider>
+            <Outlet />
+            <Toaster />
+          </TooltipProvider>
+        </AuthProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
