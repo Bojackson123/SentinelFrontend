@@ -1,75 +1,93 @@
-# React + TypeScript + Vite
+# Sentinel Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Management dashboard for the Sentinel IoT platform. Provides device monitoring, alarm management, and fleet overview for all user roles.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19** + **TypeScript** — UI framework
+- **Vite 8** — Build tooling with React Compiler
+- **TanStack Router** — File-based routing with auth guards
+- **TanStack Query** — Server state, caching, and background refetching
+- **Tailwind CSS v4** + **shadcn/ui** — Styling and component library
+- **Axios** — HTTP client with JWT interceptors
 
-## React Compiler
+## Prerequisites
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Node.js** >= 20
+- **Sentinel Backend** running at `http://localhost:5288` (or configure `VITE_API_URL`)
 
-Note: This will impact Vite dev & build performances.
+## Getting Started
 
-## Expanding the ESLint configuration
+```bash
+# Install dependencies
+npm install
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+# Start development server
+npm run dev
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app runs at `http://localhost:5173` by default.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Scripts
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+| Script | Description |
+| --- | --- |
+| `npm run dev` | Start Vite dev server with HMR |
+| `npm run build` | Type-check and build for production |
+| `npm run preview` | Preview the production build locally |
+| `npm run lint` | Run ESLint |
+
+## Environment Variables
+
+Create a `.env.development` file (or `.env.production` for deploys):
+
 ```
+VITE_API_URL=http://localhost:5288
+```
+
+| Variable | Description | Default |
+| --- | --- | --- |
+| `VITE_API_URL` | Backend API base URL | `https://localhost:7001` |
+
+## Project Structure
+
+```
+src/
+├── api/            # Axios client + typed API functions
+├── components/
+│   ├── ui/         # shadcn/ui primitives
+│   └── pages/      # Page-level components
+├── hooks/queries/  # TanStack Query hooks
+├── routes/         # TanStack Router file-based routes
+├── stores/         # Auth context provider
+├── types/          # TypeScript type definitions
+└── lib/            # Utility functions
+```
+
+## Pages
+
+| Route | Description |
+| --- | --- |
+| `/login` | Login page |
+| `/register` | Registration page |
+| `/` | Dashboard — KPI cards + device fleet table |
+| `/devices` | Device list with search and status filters |
+| `/devices/:deviceId` | Device detail — telemetry, commands, alarms |
+| `/alarms` | Alarm list with status/severity filters and actions |
+
+## Authentication
+
+JWT-based auth via the backend's `/api/auth/login` endpoint. Tokens are stored in `localStorage` and parsed for user profile and role information. Route guards in the TanStack Router layout routes protect authenticated pages and redirect unauthenticated users to `/login`.
+
+Supported roles: `InternalAdmin`, `InternalTech`, `CompanyAdmin`, `CompanyTech`, `HomeownerViewer`.
+
+## Documentation
+
+Detailed documentation is available in the [`docs/`](docs/) folder:
+
+- [Architecture Overview](docs/architecture.md) — tech stack, project structure, request lifecycle
+- [Authentication](docs/authentication.md) — login flow, JWT handling, roles, route guards
+- [Routing](docs/routing.md) — route map, layout routes, adding new routes
+- [API Layer](docs/api-layer.md) — Axios client, response normalization, query hooks
+- [Pages & Features](docs/pages.md) — detailed breakdown of each page
+- [State Management](docs/state-management.md) — TanStack Query, auth context, UI state

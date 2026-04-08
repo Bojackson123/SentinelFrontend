@@ -1,5 +1,3 @@
-"use client"
-
 import { Badge } from "@/components/ui/badge"
 import {
   Card,
@@ -9,101 +7,134 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
-import { TrendingUpIcon, TrendingDownIcon } from "lucide-react"
+import { CpuIcon, BellRingIcon, WifiIcon, WifiOffIcon } from "lucide-react"
+import { Skeleton } from "@/components/ui/skeleton"
 
-export function SectionCards() {
+interface SectionCardsProps {
+  totalDevices: number;
+  activeDevices: number;
+  offlineDevices: number;
+  activeAlarms: number;
+  criticalAlarms: number;
+  isLoading?: boolean;
+}
+
+export function SectionCards({
+  totalDevices,
+  activeDevices,
+  offlineDevices,
+  activeAlarms,
+  criticalAlarms,
+  isLoading,
+}: SectionCardsProps) {
+  if (isLoading) {
+    return (
+      <div className="grid grid-cols-1 gap-4 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, i) => (
+          <Card key={i} className="@container/card">
+            <CardHeader>
+              <Skeleton className="h-4 w-24" />
+              <Skeleton className="h-8 w-16" />
+            </CardHeader>
+            <CardFooter>
+              <Skeleton className="h-4 w-40" />
+            </CardFooter>
+          </Card>
+        ))}
+      </div>
+    );
+  }
+
   return (
     <div className="grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Total Revenue</CardDescription>
+          <CardDescription>Total Devices</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            $1,250.00
+            {totalDevices}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +12.5%
-            </Badge>
+            <CpuIcon className="size-4 text-muted-foreground" />
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Trending up this month{" "}
-            <TrendingUpIcon className="size-4" />
+            {activeDevices} active in fleet
           </div>
           <div className="text-muted-foreground">
-            Visitors for the last 6 months
+            All registered devices
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>New Customers</CardDescription>
+          <CardDescription>Devices Online</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            1,234
+            {totalDevices - offlineDevices}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingDownIcon
-              />
-              -20%
+            <Badge variant="outline" className="text-green-600">
+              <WifiIcon className="size-3" />
+              Online
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Down 20% this period{" "}
-            <TrendingDownIcon className="size-4" />
+            Reporting normally
+            <WifiIcon className="size-4 text-green-600" />
           </div>
           <div className="text-muted-foreground">
-            Acquisition needs attention
+            Last 15-minute window
           </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Active Accounts</CardDescription>
+          <CardDescription>Devices Offline</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            45,678
+            {offlineDevices}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +12.5%
+            <Badge variant={offlineDevices > 0 ? "destructive" : "outline"}>
+              <WifiOffIcon className="size-3" />
+              {offlineDevices > 0 ? "Alert" : "Clear"}
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Strong user retention{" "}
-            <TrendingUpIcon className="size-4" />
+            {offlineDevices > 0
+              ? `${offlineDevices} device${offlineDevices > 1 ? "s" : ""} not reporting`
+              : "All devices connected"}
+            <WifiOffIcon className="size-4" />
           </div>
-          <div className="text-muted-foreground">Engagement exceed targets</div>
+          <div className="text-muted-foreground">
+            Exceeding offline threshold
+          </div>
         </CardFooter>
       </Card>
       <Card className="@container/card">
         <CardHeader>
-          <CardDescription>Growth Rate</CardDescription>
+          <CardDescription>Active Alarms</CardDescription>
           <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl">
-            4.5%
+            {activeAlarms}
           </CardTitle>
           <CardAction>
-            <Badge variant="outline">
-              <TrendingUpIcon
-              />
-              +4.5%
+            <Badge variant={criticalAlarms > 0 ? "destructive" : "outline"}>
+              <BellRingIcon className="size-3" />
+              {criticalAlarms} critical
             </Badge>
           </CardAction>
         </CardHeader>
         <CardFooter className="flex-col items-start gap-1.5 text-sm">
           <div className="line-clamp-1 flex gap-2 font-medium">
-            Steady performance increase{" "}
-            <TrendingUpIcon className="size-4" />
+            {activeAlarms === 0 ? "No active alarms" : `${activeAlarms} requiring attention`}
+            <BellRingIcon className="size-4" />
           </div>
-          <div className="text-muted-foreground">Meets growth projections</div>
+          <div className="text-muted-foreground">
+            Active + Acknowledged
+          </div>
         </CardFooter>
       </Card>
     </div>
