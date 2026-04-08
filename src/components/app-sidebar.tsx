@@ -105,6 +105,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
+      <div className="mx-4">
+        <div className="h-px bg-border/60" />
+      </div>
       <SidebarContent>
         <NavMain items={navMain} />
         <NavSecondary items={navSecondary} className="mt-auto" />
