@@ -4,6 +4,10 @@ import { useMatches } from "@tanstack/react-router"
 
 const titleMap: Record<string, string> = {
   "/_app/": "Dashboard",
+  "/_app/companies/": "Companies",
+  "/_app/companies/$companyId": "Company Detail",
+  "/_app/sites/": "Sites",
+  "/_app/sites/$siteId": "Site Detail",
   "/_app/devices/": "Devices",
   "/_app/devices/$deviceId": "Device Detail",
   "/_app/alarms/": "Alarms",

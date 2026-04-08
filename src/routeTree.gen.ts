@@ -14,9 +14,13 @@ import { Route as AppRouteImport } from './routes/_app'
 import { Route as AppIndexRouteImport } from './routes/_app/index'
 import { Route as AuthRegisterRouteImport } from './routes/_auth/register'
 import { Route as AuthLoginRouteImport } from './routes/_auth/login'
+import { Route as AppSitesIndexRouteImport } from './routes/_app/sites/index'
 import { Route as AppDevicesIndexRouteImport } from './routes/_app/devices/index'
+import { Route as AppCompaniesIndexRouteImport } from './routes/_app/companies/index'
 import { Route as AppAlarmsIndexRouteImport } from './routes/_app/alarms/index'
+import { Route as AppSitesSiteIdRouteImport } from './routes/_app/sites/$siteId'
 import { Route as AppDevicesDeviceIdRouteImport } from './routes/_app/devices/$deviceId'
+import { Route as AppCompaniesCompanyIdRouteImport } from './routes/_app/companies/$companyId'
 
 const AuthRoute = AuthRouteImport.update({
   id: '/_auth',
@@ -41,9 +45,19 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AuthRoute,
 } as any)
+const AppSitesIndexRoute = AppSitesIndexRouteImport.update({
+  id: '/sites/',
+  path: '/sites/',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDevicesIndexRoute = AppDevicesIndexRouteImport.update({
   id: '/devices/',
   path: '/devices/',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCompaniesIndexRoute = AppCompaniesIndexRouteImport.update({
+  id: '/companies/',
+  path: '/companies/',
   getParentRoute: () => AppRoute,
 } as any)
 const AppAlarmsIndexRoute = AppAlarmsIndexRouteImport.update({
@@ -51,9 +65,19 @@ const AppAlarmsIndexRoute = AppAlarmsIndexRouteImport.update({
   path: '/alarms/',
   getParentRoute: () => AppRoute,
 } as any)
+const AppSitesSiteIdRoute = AppSitesSiteIdRouteImport.update({
+  id: '/sites/$siteId',
+  path: '/sites/$siteId',
+  getParentRoute: () => AppRoute,
+} as any)
 const AppDevicesDeviceIdRoute = AppDevicesDeviceIdRouteImport.update({
   id: '/devices/$deviceId',
   path: '/devices/$deviceId',
+  getParentRoute: () => AppRoute,
+} as any)
+const AppCompaniesCompanyIdRoute = AppCompaniesCompanyIdRouteImport.update({
+  id: '/companies/$companyId',
+  path: '/companies/$companyId',
   getParentRoute: () => AppRoute,
 } as any)
 
@@ -61,17 +85,25 @@ export interface FileRoutesByFullPath {
   '/': typeof AppIndexRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/companies/$companyId': typeof AppCompaniesCompanyIdRoute
   '/devices/$deviceId': typeof AppDevicesDeviceIdRoute
+  '/sites/$siteId': typeof AppSitesSiteIdRoute
   '/alarms/': typeof AppAlarmsIndexRoute
+  '/companies/': typeof AppCompaniesIndexRoute
   '/devices/': typeof AppDevicesIndexRoute
+  '/sites/': typeof AppSitesIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof AppIndexRoute
   '/login': typeof AuthLoginRoute
   '/register': typeof AuthRegisterRoute
+  '/companies/$companyId': typeof AppCompaniesCompanyIdRoute
   '/devices/$deviceId': typeof AppDevicesDeviceIdRoute
+  '/sites/$siteId': typeof AppSitesSiteIdRoute
   '/alarms': typeof AppAlarmsIndexRoute
+  '/companies': typeof AppCompaniesIndexRoute
   '/devices': typeof AppDevicesIndexRoute
+  '/sites': typeof AppSitesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,9 +112,13 @@ export interface FileRoutesById {
   '/_auth/login': typeof AuthLoginRoute
   '/_auth/register': typeof AuthRegisterRoute
   '/_app/': typeof AppIndexRoute
+  '/_app/companies/$companyId': typeof AppCompaniesCompanyIdRoute
   '/_app/devices/$deviceId': typeof AppDevicesDeviceIdRoute
+  '/_app/sites/$siteId': typeof AppSitesSiteIdRoute
   '/_app/alarms/': typeof AppAlarmsIndexRoute
+  '/_app/companies/': typeof AppCompaniesIndexRoute
   '/_app/devices/': typeof AppDevicesIndexRoute
+  '/_app/sites/': typeof AppSitesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -90,17 +126,25 @@ export interface FileRouteTypes {
     | '/'
     | '/login'
     | '/register'
+    | '/companies/$companyId'
     | '/devices/$deviceId'
+    | '/sites/$siteId'
     | '/alarms/'
+    | '/companies/'
     | '/devices/'
+    | '/sites/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/login'
     | '/register'
+    | '/companies/$companyId'
     | '/devices/$deviceId'
+    | '/sites/$siteId'
     | '/alarms'
+    | '/companies'
     | '/devices'
+    | '/sites'
   id:
     | '__root__'
     | '/_app'
@@ -108,9 +152,13 @@ export interface FileRouteTypes {
     | '/_auth/login'
     | '/_auth/register'
     | '/_app/'
+    | '/_app/companies/$companyId'
     | '/_app/devices/$deviceId'
+    | '/_app/sites/$siteId'
     | '/_app/alarms/'
+    | '/_app/companies/'
     | '/_app/devices/'
+    | '/_app/sites/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -155,11 +203,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthLoginRouteImport
       parentRoute: typeof AuthRoute
     }
+    '/_app/sites/': {
+      id: '/_app/sites/'
+      path: '/sites'
+      fullPath: '/sites/'
+      preLoaderRoute: typeof AppSitesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/devices/': {
       id: '/_app/devices/'
       path: '/devices'
       fullPath: '/devices/'
       preLoaderRoute: typeof AppDevicesIndexRouteImport
+      parentRoute: typeof AppRoute
+    }
+    '/_app/companies/': {
+      id: '/_app/companies/'
+      path: '/companies'
+      fullPath: '/companies/'
+      preLoaderRoute: typeof AppCompaniesIndexRouteImport
       parentRoute: typeof AppRoute
     }
     '/_app/alarms/': {
@@ -169,6 +231,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppAlarmsIndexRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/sites/$siteId': {
+      id: '/_app/sites/$siteId'
+      path: '/sites/$siteId'
+      fullPath: '/sites/$siteId'
+      preLoaderRoute: typeof AppSitesSiteIdRouteImport
+      parentRoute: typeof AppRoute
+    }
     '/_app/devices/$deviceId': {
       id: '/_app/devices/$deviceId'
       path: '/devices/$deviceId'
@@ -176,21 +245,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppDevicesDeviceIdRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/companies/$companyId': {
+      id: '/_app/companies/$companyId'
+      path: '/companies/$companyId'
+      fullPath: '/companies/$companyId'
+      preLoaderRoute: typeof AppCompaniesCompanyIdRouteImport
+      parentRoute: typeof AppRoute
+    }
   }
 }
 
 interface AppRouteChildren {
   AppIndexRoute: typeof AppIndexRoute
+  AppCompaniesCompanyIdRoute: typeof AppCompaniesCompanyIdRoute
   AppDevicesDeviceIdRoute: typeof AppDevicesDeviceIdRoute
+  AppSitesSiteIdRoute: typeof AppSitesSiteIdRoute
   AppAlarmsIndexRoute: typeof AppAlarmsIndexRoute
+  AppCompaniesIndexRoute: typeof AppCompaniesIndexRoute
   AppDevicesIndexRoute: typeof AppDevicesIndexRoute
+  AppSitesIndexRoute: typeof AppSitesIndexRoute
 }
 
 const AppRouteChildren: AppRouteChildren = {
   AppIndexRoute: AppIndexRoute,
+  AppCompaniesCompanyIdRoute: AppCompaniesCompanyIdRoute,
   AppDevicesDeviceIdRoute: AppDevicesDeviceIdRoute,
+  AppSitesSiteIdRoute: AppSitesSiteIdRoute,
   AppAlarmsIndexRoute: AppAlarmsIndexRoute,
+  AppCompaniesIndexRoute: AppCompaniesIndexRoute,
   AppDevicesIndexRoute: AppDevicesIndexRoute,
+  AppSitesIndexRoute: AppSitesIndexRoute,
 }
 
 const AppRouteWithChildren = AppRoute._addFileChildren(AppRouteChildren)

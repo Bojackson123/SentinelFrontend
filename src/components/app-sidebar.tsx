@@ -12,20 +12,41 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { LayoutDashboardIcon, CpuIcon, BellRingIcon, Settings2Icon, CircleHelpIcon, ShieldIcon } from "lucide-react"
+import { LayoutDashboardIcon, CpuIcon, BellRingIcon, Settings2Icon, CircleHelpIcon, ShieldIcon, BuildingIcon, MapPinIcon } from "lucide-react"
 import { useAuth } from "@/stores/auth-store"
 import { Link } from "@tanstack/react-router"
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { user, isInternal, isCompanyUser } = useAuth();
+  const { user, isInternal, isCompanyUser, isHomeowner } = useAuth();
 
   const navMain = React.useMemo(() => {
-    const items = [
+    const items: { title: string; url: string; icon: React.ReactNode }[] = [
       {
         title: "Dashboard",
         url: "/",
         icon: <LayoutDashboardIcon />,
       },
+    ];
+
+    // Internal users see Companies → Sites → Devices hierarchy
+    if (isInternal) {
+      items.push({
+        title: "Companies",
+        url: "/companies",
+        icon: <BuildingIcon />,
+      });
+    }
+
+    // Company users see Sites (scoped to their company)
+    if (isInternal || isCompanyUser) {
+      items.push({
+        title: "Sites",
+        url: "/sites",
+        icon: <MapPinIcon />,
+      });
+    }
+
+    items.push(
       {
         title: "Devices",
         url: "/devices",
@@ -36,9 +57,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         url: "/alarms",
         icon: <BellRingIcon />,
       },
-    ];
+    );
+
     return items;
-  }, []);
+  }, [isInternal, isCompanyUser]);
 
   const navSecondary = React.useMemo(() => {
     const items: { title: string; url: string; icon: React.ReactNode }[] = [

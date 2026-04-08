@@ -33,3 +33,10 @@ export type UnassignmentReason =
   | "SubscriptionLapsed"
   | "Transferred"
   | "Decommissioned";
+
+export type SubscriptionStatus =
+  | "Trialing"
+  | "Active"
+  | "PastDue"
+  | "Cancelled"
+  | "Suspended";
