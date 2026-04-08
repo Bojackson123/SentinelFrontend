@@ -4,7 +4,10 @@ const TOKEN_KEY = "sentinel_token";
 
 export const apiClient = axios.create({
   baseURL: import.meta.env.VITE_API_URL ?? "https://localhost:7001",
-  headers: { "Content-Type": "application/json" },
+  headers: {
+    "Content-Type": "application/json",
+    "ngrok-skip-browser-warning": "true",
+  },
 });
 
 apiClient.interceptors.request.use((config) => {
