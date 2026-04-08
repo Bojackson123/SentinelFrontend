@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
-import { BuildingIcon, UsersIcon, MapPinIcon } from "lucide-react";
+import { BuildingIcon, UsersIcon, MapPinIcon, CpuIcon } from "lucide-react";
 import type { SubscriptionStatus } from "@/types/enums";
 
 const subStatusVariant: Record<
@@ -54,6 +54,7 @@ export function CompanyListPage() {
                 <TableHead>Subscription</TableHead>
                 <TableHead>Customers</TableHead>
                 <TableHead>Sites</TableHead>
+                <TableHead>Devices</TableHead>
                 <TableHead>Created</TableHead>
               </TableRow>
             </TableHeader>
@@ -91,6 +92,12 @@ export function CompanyListPage() {
                         {company.siteCount}
                       </span>
                     </TableCell>
+                    <TableCell>
+                      <span className="flex items-center gap-1 text-sm">
+                        <CpuIcon className="size-3.5 text-muted-foreground" />
+                        {company.deviceCount}
+                      </span>
+                    </TableCell>
                     <TableCell className="text-sm text-muted-foreground">
                       {new Date(company.createdAt).toLocaleDateString()}
                     </TableCell>
@@ -98,7 +105,7 @@ export function CompanyListPage() {
                 ))
               ) : (
                 <TableRow>
-                  <TableCell colSpan={6} className="h-24 text-center text-muted-foreground">
+                  <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                     No companies found.
                   </TableCell>
                 </TableRow>

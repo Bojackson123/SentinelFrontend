@@ -104,6 +104,18 @@ export function CompanyDetailPage() {
               </div>
             )}
             <div className="flex items-center gap-2">
+              <MailIcon className="size-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Billing:</span>
+              <span>{company.billingEmail}</span>
+            </div>
+            {company.focalPointName && (
+              <div className="flex items-center gap-2">
+                <UsersIcon className="size-4 text-muted-foreground" />
+                <span className="text-muted-foreground">Focal Point:</span>
+                <span>{company.focalPointName}</span>
+              </div>
+            )}
+            <div className="flex items-center gap-2">
               <UsersIcon className="size-4 text-muted-foreground" />
               <span className="text-muted-foreground">Customers:</span>
               <span className="font-medium">{company.customerCount}</span>
@@ -112,6 +124,11 @@ export function CompanyDetailPage() {
               <MapPinIcon className="size-4 text-muted-foreground" />
               <span className="text-muted-foreground">Sites:</span>
               <span className="font-medium">{company.siteCount}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <CpuIcon className="size-4 text-muted-foreground" />
+              <span className="text-muted-foreground">Devices:</span>
+              <span className="font-medium">{company.deviceCount}</span>
             </div>
           </div>
         </CardContent>

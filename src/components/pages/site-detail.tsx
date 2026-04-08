@@ -20,8 +20,9 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   MapPinIcon,
-  GlobeIcon,
   UserIcon,
+  MailIcon,
+  PhoneIcon,
 } from "lucide-react";
 import type { DeviceStatus } from "@/types/enums";
 
@@ -83,6 +84,33 @@ export function SiteDetailPage() {
         </CardHeader>
         <CardContent>
           <div className="grid gap-3 sm:grid-cols-2 text-sm">
+            <div className="space-y-2">
+              {site.customerName && (
+                <div className="flex items-center gap-2">
+                  <UserIcon className="size-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Customer:</span>
+                  <span>{site.customerName}</span>
+                </div>
+              )}
+              {site.customerEmail && (
+                <div className="flex items-center gap-2">
+                  <MailIcon className="size-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Email:</span>
+                  <a href={`mailto:${site.customerEmail}`} className="hover:underline">
+                    {site.customerEmail}
+                  </a>
+                </div>
+              )}
+              {site.customerPhone && (
+                <div className="flex items-center gap-2">
+                  <PhoneIcon className="size-4 text-muted-foreground" />
+                  <span className="text-muted-foreground">Phone:</span>
+                  <a href={`tel:${site.customerPhone}`} className="hover:underline">
+                    {site.customerPhone}
+                  </a>
+                </div>
+              )}
+            </div>
             <div className="flex items-start gap-2">
               <MapPinIcon className="mt-0.5 size-4 text-muted-foreground" />
               <div>
@@ -92,28 +120,12 @@ export function SiteDetailPage() {
                   {site.city}, {site.state} {site.postalCode}
                 </p>
                 <p>{site.country}</p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <div className="flex items-center gap-2">
-                <GlobeIcon className="size-4 text-muted-foreground" />
-                <span className="text-muted-foreground">Timezone:</span>
-                <span>{site.timezone}</span>
-              </div>
-              {site.customerName && (
-                <div className="flex items-center gap-2">
-                  <UserIcon className="size-4 text-muted-foreground" />
-                  <span className="text-muted-foreground">Customer:</span>
-                  <span>{site.customerName}</span>
-                </div>
-              )}
-              {site.latitude != null && site.longitude != null && (
-                <div className="flex items-center gap-2 text-muted-foreground">
-                  <span>
+                {site.latitude != null && site.longitude != null && (
+                  <p className="text-muted-foreground">
                     {site.latitude.toFixed(4)}, {site.longitude.toFixed(4)}
-                  </span>
-                </div>
-              )}
+                  </p>
+                )}
+              </div>
             </div>
           </div>
         </CardContent>
