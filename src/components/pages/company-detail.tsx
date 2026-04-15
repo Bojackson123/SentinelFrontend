@@ -3,6 +3,7 @@ import { Link } from "@tanstack/react-router";
 import { Route } from "@/routes/_app/companies/$companyId";
 import { useCompany } from "@/hooks/queries/use-companies";
 import { useSites } from "@/hooks/queries/use-sites";
+import { useAuth } from "@/stores/auth-store";
 import { Badge } from "@/components/ui/badge";
 import {
   Card,
@@ -27,6 +28,7 @@ import {
   UsersIcon,
   CpuIcon,
 } from "lucide-react";
+import { CreateSiteDialog } from "@/components/create-site-dialog";
 import type { SubscriptionStatus } from "@/types/enums";
 
 const subStatusVariant: Record<
@@ -52,6 +54,7 @@ export function CompanyDetailPage() {
     page,
     pageSize,
   });
+  const { isInternal, isCompanyUser } = useAuth();
 
   const totalPages = Math.ceil((sitesData?.totalCount ?? 0) / pageSize);
 
@@ -136,7 +139,12 @@ export function CompanyDetailPage() {
 
       {/* Sites Table */}
       <div>
-        <h3 className="mb-3 text-base font-semibold">Sites</h3>
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-base font-semibold">Sites</h3>
+          {(isInternal || isCompanyUser) && (
+            <CreateSiteDialog companyId={companyId} />
+          )}
+        </div>
         {sitesLoading ? (
           <div className="space-y-2">
             {Array.from({ length: 3 }).map((_, i) => (

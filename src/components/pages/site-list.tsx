@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useSites } from "@/hooks/queries/use-sites";
+import { useAuth } from "@/stores/auth-store";
 import {
   Table,
   TableBody,
@@ -11,10 +12,12 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { MapPinIcon, CpuIcon } from "lucide-react";
+import { CreateSiteDialog } from "@/components/create-site-dialog";
 
 export function SiteListPage() {
   const [page, setPage] = useState(1);
   const pageSize = 20;
+  const { isInternal, isCompanyUser } = useAuth();
 
   const { data, isLoading } = useSites({ page, pageSize });
   const totalPages = Math.ceil((data?.totalCount ?? 0) / pageSize);
@@ -23,6 +26,7 @@ export function SiteListPage() {
     <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Sites</h2>
+        {(isInternal || isCompanyUser) && <CreateSiteDialog />}
       </div>
 
       {isLoading ? (

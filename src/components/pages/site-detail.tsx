@@ -24,6 +24,8 @@ import {
   MailIcon,
   PhoneIcon,
 } from "lucide-react";
+import { useAuth } from "@/stores/auth-store";
+import { AssignDeviceDialog } from "@/components/assign-device-dialog";
 import type { DeviceStatus } from "@/types/enums";
 
 const statusVariant: Record<
@@ -48,6 +50,7 @@ export function SiteDetailPage() {
     siteId,
     { page, pageSize }
   );
+  const { isInternal, isCompanyUser } = useAuth();
 
   const totalPages = Math.ceil((devicesData?.totalCount ?? 0) / pageSize);
 
@@ -133,9 +136,14 @@ export function SiteDetailPage() {
 
       {/* Devices at this Site */}
       <div>
-        <h3 className="mb-3 text-base font-semibold">
-          Devices ({devicesData?.totalCount ?? 0})
-        </h3>
+        <div className="mb-3 flex items-center justify-between">
+          <h3 className="text-base font-semibold">
+            Devices ({devicesData?.totalCount ?? 0})
+          </h3>
+          {(isInternal || isCompanyUser) && (
+            <AssignDeviceDialog siteId={siteId} />
+          )}
+        </div>
         {devicesLoading ? (
           <div className="space-y-2">
             {Array.from({ length: 3 }).map((_, i) => (

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { useCompanies } from "@/hooks/queries/use-companies";
+import { useAuth } from "@/stores/auth-store";
 import { Badge } from "@/components/ui/badge";
 import {
   Table,
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { BuildingIcon, UsersIcon, MapPinIcon, CpuIcon } from "lucide-react";
+import { CreateCompanyDialog } from "@/components/create-company-dialog";
 import type { SubscriptionStatus } from "@/types/enums";
 
 const subStatusVariant: Record<
@@ -28,6 +30,7 @@ const subStatusVariant: Record<
 export function CompanyListPage() {
   const [page, setPage] = useState(1);
   const pageSize = 20;
+  const { isInternal } = useAuth();
 
   const { data, isLoading } = useCompanies({ page, pageSize });
   const totalPages = Math.ceil((data?.totalCount ?? 0) / pageSize);
@@ -36,6 +39,7 @@ export function CompanyListPage() {
     <div className="flex flex-1 flex-col gap-4 p-4 lg:p-6">
       <div className="flex items-center justify-between">
         <h2 className="text-lg font-semibold">Companies</h2>
+        {isInternal && <CreateCompanyDialog />}
       </div>
 
       {isLoading ? (

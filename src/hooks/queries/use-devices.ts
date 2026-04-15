@@ -1,5 +1,5 @@
-import { useQuery } from "@tanstack/react-query";
-import { getDevices, getDevice, getDeviceState, getCommands } from "@/api/devices";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getDevices, getDevice, getDeviceState, getCommands, assignDevice } from "@/api/devices";
 
 export function useDevices(params?: {
   page?: number;
@@ -35,5 +35,18 @@ export function useDeviceCommands(deviceId: string) {
     queryKey: ["deviceCommands", deviceId],
     queryFn: () => getCommands(deviceId),
     enabled: !!deviceId,
+  });
+}
+
+export function useAssignDevice() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({ serialNumber, siteId }: { serialNumber: string; siteId: number }) =>
+      assignDevice(serialNumber, siteId),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["devices"] });
+      queryClient.invalidateQueries({ queryKey: ["siteDevices"] });
+      queryClient.invalidateQueries({ queryKey: ["sites"] });
+    },
   });
 }

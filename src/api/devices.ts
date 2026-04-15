@@ -58,3 +58,14 @@ export async function getCommands(deviceId: string): Promise<CommandLog[]> {
   const commands = data.commands ?? data ?? [];
   return commands.map((c: any) => ({ ...c, id: c.commandId ?? c.id }));
 }
+
+export async function assignDevice(
+  serialNumber: string,
+  siteId: number
+): Promise<{ assignmentId: number; serialNumber: string; siteId: number }> {
+  const { data } = await apiClient.post(
+    `/api/devices/${encodeURIComponent(serialNumber)}/assign`,
+    { siteId }
+  );
+  return data;
+}

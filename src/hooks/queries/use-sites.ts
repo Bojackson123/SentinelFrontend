@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
-import { getSites, getSite, getSiteDevices } from "@/api/sites";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getSites, getSite, getSiteDevices, createSite } from "@/api/sites";
+import type { CreateSiteRequest } from "@/types/company";
 
 export function useSites(params?: {
   companyId?: number;
@@ -28,5 +29,16 @@ export function useSiteDevices(
     queryKey: ["siteDevices", siteId, params],
     queryFn: () => getSiteDevices(siteId, params),
     enabled: !!siteId,
+  });
+}
+
+export function useCreateSite() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: (request: CreateSiteRequest) => createSite(request),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["sites"] });
+      queryClient.invalidateQueries({ queryKey: ["company"] });
+    },
   });
 }
