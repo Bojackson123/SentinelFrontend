@@ -31,7 +31,7 @@ interface CreateSiteDialogProps {
 }
 
 export function CreateSiteDialog({ companyId }: CreateSiteDialogProps) {
-  const { user, isInternal } = useAuth();
+  const { user } = useAuth();
   const resolvedCompanyId = companyId ?? user?.companyId ?? undefined;
 
   const [open, setOpen] = useState(false);
